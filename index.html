@@ -194,18 +194,18 @@ function buildDefaultData() {
   const today = todayKey();
 
   const products = {
-    cerave:    { id: 'cerave',    name: 'CeraVe',                 goal: 'cleansing',   goalDays: null, slotStartDate: today, goalStartDate: today, history: [] },
-    snail:     { id: 'snail',     name: 'נוזל חלזונות',            goal: 'hydration',   goalDays: 14,   slotStartDate: today, goalStartDate: today, history: [] },
-    ceramide:  { id: 'ceramide',  name: 'Q+A Ceramide',           goal: 'hydration',   goalDays: 14,   slotStartDate: today, goalStartDate: today, history: [] },
-    rosehip:   { id: 'rosehip',   name: 'שמן רוזהיפ',              goal: 'nourishing',  goalDays: 14,   slotStartDate: today, goalStartDate: today, history: [] },
-    spf:       { id: 'spf',       name: 'Dermalogica SPF 50',     goal: 'protection',  goalDays: null, slotStartDate: today, goalStartDate: today, history: [] },
-    body:      { id: 'body',      name: 'קרם גוף + שמן שקדים',    goal: 'nourishing',  goalDays: null, slotStartDate: today, goalStartDate: today, history: [] },
-    makeup:    { id: 'makeup',    name: 'הסרת איפור',              goal: 'cleansing',   goalDays: null, slotStartDate: today, goalStartDate: today, history: [] },
-    lunar:     { id: 'lunar',     name: 'Lunar Bliss',            goal: 'hydration',   goalDays: 14,   slotStartDate: today, goalStartDate: today, history: [] },
-    retinol:   { id: 'retinol',   name: 'רטינול Advanced Clinicals', goal: 'antiaging', goalDays: 90, slotStartDate: today, goalStartDate: today, history: [] },
-    superfood: { id: 'superfood', name: 'Super Food Oil',         goal: 'nourishing',  goalDays: 14,   slotStartDate: today, goalStartDate: today, history: [] },
-    guasha:    { id: 'guasha',    name: 'גואה שה (אבן רוז קוורץ)', goal: 'firming',    goalDays: 60,   slotStartDate: today, goalStartDate: today, history: [] },
-    mask:      { id: 'mask',      name: 'Vitamin A.C.E. מסכה',    goal: 'brightening', goalDays: 60,   slotStartDate: today, goalStartDate: today, history: [] },
+    cerave:    { id: 'cerave',    name: 'CeraVe',                 goal: 'cleansing',   goalDays: null, slotStartDate: today, goalStartDate: today, price: null, history: [] },
+    snail:     { id: 'snail',     name: 'נוזל חלזונות',            goal: 'hydration',   goalDays: 14,   slotStartDate: today, goalStartDate: today, price: null, history: [] },
+    ceramide:  { id: 'ceramide',  name: 'Q+A Ceramide',           goal: 'hydration',   goalDays: 14,   slotStartDate: today, goalStartDate: today, price: null, history: [] },
+    rosehip:   { id: 'rosehip',   name: 'שמן רוזהיפ',              goal: 'nourishing',  goalDays: 14,   slotStartDate: today, goalStartDate: today, price: null, history: [] },
+    spf:       { id: 'spf',       name: 'Dermalogica SPF 50',     goal: 'protection',  goalDays: null, slotStartDate: today, goalStartDate: today, price: null, history: [] },
+    body:      { id: 'body',      name: 'קרם גוף + שמן שקדים',    goal: 'nourishing',  goalDays: null, slotStartDate: today, goalStartDate: today, price: null, history: [] },
+    makeup:    { id: 'makeup',    name: 'הסרת איפור',              goal: 'cleansing',   goalDays: null, slotStartDate: today, goalStartDate: today, price: null, history: [] },
+    lunar:     { id: 'lunar',     name: 'Lunar Bliss',            goal: 'hydration',   goalDays: 14,   slotStartDate: today, goalStartDate: today, price: null, history: [] },
+    retinol:   { id: 'retinol',   name: 'רטינול Advanced Clinicals', goal: 'antiaging', goalDays: 90, slotStartDate: today, goalStartDate: today, price: null, history: [] },
+    superfood: { id: 'superfood', name: 'Super Food Oil',         goal: 'nourishing',  goalDays: 14,   slotStartDate: today, goalStartDate: today, price: null, history: [] },
+    guasha:    { id: 'guasha',    name: 'גואה שה (אבן רוז קוורץ)', goal: 'firming',    goalDays: 60,   slotStartDate: today, goalStartDate: today, price: null, history: [] },
+    mask:      { id: 'mask',      name: 'Vitamin A.C.E. מסכה',    goal: 'brightening', goalDays: 60,   slotStartDate: today, goalStartDate: today, price: null, history: [] },
   };
 
   const morningSteps = [
@@ -484,6 +484,37 @@ function GoalFields({ goal, goalDays, onGoalChange, onGoalDaysChange }) {
   );
 }
 
+// ============== PRICE FIELD ==============
+function PriceField({ price, onChange }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium text-stone-700 mb-2">מחיר (₪)</label>
+      <input
+        type="number"
+        min="0"
+        step="0.01"
+        value={price ?? ''}
+        onChange={(e) => onChange(e.target.value ? Number(e.target.value) : null)}
+        placeholder="למשל: 200"
+        className="w-full p-3 border border-stone-200 rounded-2xl text-sm bg-stone-50/50 focus:outline-none focus:border-emerald-300"
+        style={{ fontFamily: "'Heebo', sans-serif" }}
+      />
+      <p className="text-xs text-stone-500 mt-1.5">אופציונלי · לחישוב ערך-לכסף בארכיון</p>
+    </div>
+  );
+}
+
+// ============== FORMAT PRICE / COST PER DAY ==============
+function formatPrice(p) {
+  if (p === null || p === undefined) return null;
+  return `₪${p.toFixed(p % 1 === 0 ? 0 : 2)}`;
+}
+function formatCostPerDay(price, days) {
+  if (!price || !days || days < 1) return null;
+  const cpd = price / days;
+  return `₪${cpd.toFixed(cpd >= 10 ? 0 : cpd >= 1 ? 1 : 2)} ליום`;
+}
+
 // ============== MODAL ==============
 function Modal({ children, onClose, title }) {
   useEffect(() => {
@@ -507,7 +538,7 @@ function Modal({ children, onClose, title }) {
 }
 
 // ============== STEP ACTIONS SHEET (bottom sheet modal) ==============
-function StepActionsSheet({ stepName, onClose, onEdit, onEditProduct, onReplace, onMoveUp, onMoveDown, onArchive }) {
+function StepActionsSheet({ stepName, onClose, onEdit, onReplace, onMoveUp, onMoveDown, onArchive }) {
   return (
     <Modal title={stepName ? `פעולות: ${stepName}` : 'פעולות'} onClose={onClose}>
       <div className="flex flex-col gap-2">
@@ -539,18 +570,8 @@ function StepActionsSheet({ stepName, onClose, onEdit, onEditProduct, onReplace,
           className="text-right text-base flex items-center gap-3 text-stone-700 hover:bg-emerald-50 hover:text-emerald-700 p-3.5 rounded-2xl transition-colors border border-stone-100"
         >
           <Icon name="edit" className="w-5 h-5 flex-shrink-0" />
-          <span>ערכי שלב (שם, פירוט, ימים)</span>
+          <span>ערכי שלב (שם, מוצר, מטרה, ימים)</span>
         </button>
-
-        {onEditProduct && (
-          <button
-            onClick={() => { onEditProduct(); onClose(); }}
-            className="text-right text-base flex items-center gap-3 text-stone-700 hover:bg-emerald-50 hover:text-emerald-700 p-3.5 rounded-2xl transition-colors border border-stone-100"
-          >
-            <Icon name="target" className="w-5 h-5 flex-shrink-0" />
-            <span>ערכי פרטי מוצר (מטרה, זמן)</span>
-          </button>
-        )}
 
         {onReplace && (
           <button
@@ -661,9 +682,10 @@ function StepDialog({ mode, kind, currentDay, existingSteps, initial, onClose, o
   );
   const [position, setPosition] = useState({ kind: 'end', refStepId: null });
 
-  // Goal fields (only relevant when there's a product)
+  // Product-related fields
   const [goal, setGoal] = useState(initial?.goal ?? null);
   const [goalDays, setGoalDays] = useState(initial?.goalDays ?? null);
+  const [price, setPrice] = useState(initial?.price ?? null);
 
   const canSubmit = name.trim() && days.length > 0;
 
@@ -693,15 +715,23 @@ function StepDialog({ mode, kind, currentDay, existingSteps, initial, onClose, o
             className="w-full p-3 border border-stone-200 rounded-2xl text-sm bg-stone-50/50 focus:outline-none focus:border-rose-300"
             style={{ fontFamily: "'Heebo', sans-serif" }}
           />
+          {mode === 'edit' && initial?.productName && (
+            <p className="text-xs text-stone-500 mt-1.5 leading-relaxed">
+              💡 לתיקון איות / שינוי שם בלבד. אם <strong>נגמר</strong> ואת מחליפה למותג אחר - השתמשי ב<strong>"החליפי מוצר"</strong> במקום (כדי לשמור את ההיסטוריה והדירוג).
+            </p>
+          )}
         </div>
 
         {productName.trim() && (
-          <GoalFields
-            goal={goal}
-            goalDays={goalDays}
-            onGoalChange={setGoal}
-            onGoalDaysChange={setGoalDays}
-          />
+          <>
+            <GoalFields
+              goal={goal}
+              goalDays={goalDays}
+              onGoalChange={setGoal}
+              onGoalDaysChange={setGoalDays}
+            />
+            <PriceField price={price} onChange={setPrice} />
+          </>
         )}
 
         <div>
@@ -747,6 +777,7 @@ function StepDialog({ mode, kind, currentDay, existingSteps, initial, onClose, o
               position,
               goal,
               goalDays,
+              price,
             })}
             disabled={!canSubmit}
             className={`flex-1 py-3 rounded-2xl font-medium transition-all ${
@@ -809,12 +840,13 @@ function EditProductDialog({ product, onClose, onConfirm }) {
 }
 
 // ============== REPLACE PRODUCT DIALOG ==============
-function ReplaceProductDialog({ product, onClose, onConfirm }) {
+function ReplaceProductDialog({ product, daysUsed, onClose, onConfirm }) {
   const [rating, setRating] = useState(0);
   const [note, setNote] = useState('');
   const [newName, setNewName] = useState('');
   const [newGoal, setNewGoal] = useState(product?.goal ?? null);
   const [newGoalDays, setNewGoalDays] = useState(product?.goalDays ?? null);
+  const [newPrice, setNewPrice] = useState(null);
 
   const canSubmit = newName.trim() && rating > 0;
 
@@ -826,6 +858,10 @@ function ReplaceProductDialog({ product, onClose, onConfirm }) {
     5: 'מומלץ מאוד',
   };
 
+  const goalDays = product?.goalDays;
+  const oldPriceStr = formatPrice(product?.price);
+  const cpd = formatCostPerDay(product?.price, daysUsed);
+
   return (
     <Modal title="החלפת מוצר" onClose={onClose}>
       <div className="space-y-4">
@@ -835,6 +871,23 @@ function ReplaceProductDialog({ product, onClose, onConfirm }) {
           {product?.goal && (
             <div className="text-xs text-stone-500 mt-1">
               מטרה: <span className="text-emerald-700">{goalById(product.goal)?.label}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Context box - days used / cost */}
+        <div className="bg-amber-50 rounded-2xl p-3 border border-amber-200/60">
+          <div className="text-xs font-semibold text-amber-900 mb-1.5">לפני שמדרגות - שווה לזכור:</div>
+          <div className="text-sm text-stone-700 leading-relaxed">
+            השתמשת במוצר <strong>{daysUsed}</strong>
+            {goalDays ? <> מתוך <strong>{goalDays}</strong> ימים צפויים</> : <> {daysUsed === 1 ? 'יום' : 'ימים'}</>}
+            {oldPriceStr && (
+              <> · עלה <strong>{oldPriceStr}</strong>{cpd ? ` (${cpd})` : ''}</>
+            )}.
+          </div>
+          {goalDays && daysUsed < goalDays * 0.5 && (
+            <div className="text-xs text-amber-800 mt-2 leading-relaxed">
+              💡 השתמשת בפחות מחצי הזמן הצפוי - אולי לא היה לו צ'אנס אמיתי. שווה לציין בהערה <em>למה</em> הפסקת (ריח? מרקם? אריזה?), כדי שלא תפסלי אותו לעולם.
             </div>
           )}
         </div>
@@ -861,20 +914,26 @@ function ReplaceProductDialog({ product, onClose, onConfirm }) {
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-stone-700 mb-2">המוצר החדש שמחליף</label>
-          <input
-            type="text"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            placeholder="הקלידי את שם המוצר החדש"
-            className="w-full p-3 border border-stone-200 rounded-2xl text-sm bg-stone-50/50 focus:outline-none focus:border-emerald-300"
-            style={{ fontFamily: "'Heebo', sans-serif" }}
-            autoFocus
-          />
-        </div>
+        <div className="border-t border-stone-200 pt-4">
+          <div className="text-sm font-semibold text-stone-700 mb-3">המוצר החדש שמחליף</div>
 
-        <GoalFields goal={newGoal} goalDays={newGoalDays} onGoalChange={setNewGoal} onGoalDaysChange={setNewGoalDays} />
+          <div className="mb-3">
+            <input
+              type="text"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              placeholder="הקלידי את שם המוצר החדש"
+              className="w-full p-3 border border-stone-200 rounded-2xl text-sm bg-stone-50/50 focus:outline-none focus:border-emerald-300"
+              style={{ fontFamily: "'Heebo', sans-serif" }}
+              autoFocus
+            />
+          </div>
+
+          <GoalFields goal={newGoal} goalDays={newGoalDays} onGoalChange={setNewGoal} onGoalDaysChange={setNewGoalDays} />
+          <div className="mt-3">
+            <PriceField price={newPrice} onChange={setNewPrice} />
+          </div>
+        </div>
 
         <div className="text-xs text-stone-600 leading-relaxed bg-emerald-50/40 p-2.5 rounded-xl border border-emerald-100/50">
           ✨ ספירת המוצר תתחיל מאפס · המוצר הישן יישמר בארכיון · אם המטרה זהה לקודמת, ספירת היעד תמשיך מאיפה שהיתה
@@ -885,7 +944,7 @@ function ReplaceProductDialog({ product, onClose, onConfirm }) {
             ביטול
           </button>
           <button
-            onClick={() => canSubmit && onConfirm({ rating, note: note.trim(), newName: newName.trim(), newGoal, newGoalDays })}
+            onClick={() => canSubmit && onConfirm({ rating, note: note.trim(), newName: newName.trim(), newGoal, newGoalDays, newPrice })}
             disabled={!canSubmit}
             className={`flex-1 py-3 rounded-2xl font-medium transition-all ${
               canSubmit ? 'bg-rose-500 text-white hover:bg-rose-600 shadow-sm active:scale-[0.98]' : 'bg-stone-200 text-stone-400 cursor-not-allowed'
@@ -1034,29 +1093,40 @@ function ArchivePanel({ data, onClose, onRestoreStep, onDeletePermanent, onExpor
               <div className="text-center py-8 text-stone-500 text-sm">
                 עדיין לא הוחלפו מוצרים. כשתחליפי מוצר, ההיסטוריה תופיע כאן 🌸
               </div>
-            ) : replacedProducts.map((h, idx) => (
-              <div key={idx} className="bg-white rounded-2xl p-3 border border-stone-200/60">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-stone-800">{h.name}</div>
-                    <div className="text-xs text-stone-500 mt-0.5">
-                      בתפקיד: {h.slotName} {h.goal ? `· ${goalById(h.goal)?.label || ''}` : ''}
+            ) : replacedProducts.map((h, idx) => {
+              const priceStr = formatPrice(h.price);
+              const cpdStr = formatCostPerDay(h.price, h.daysUsed);
+              return (
+                <div key={idx} className="bg-white rounded-2xl p-3 border border-stone-200/60">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-stone-800">{h.name}</div>
+                      <div className="text-xs text-stone-500 mt-0.5">
+                        בתפקיד: {h.slotName} {h.goal ? `· ${goalById(h.goal)?.label || ''}` : ''}
+                      </div>
                     </div>
+                    <StarRating rating={h.rating || 0} onChange={() => {}} size="sm" readOnly />
                   </div>
-                  <StarRating rating={h.rating || 0} onChange={() => {}} size="sm" readOnly />
-                </div>
-                <div className="flex items-center gap-3 mt-2 text-[11px] text-stone-500">
-                  {h.startDate && <span>מ-{formatDate(h.startDate)}</span>}
-                  {h.endDate && <span>עד {formatDate(h.endDate)}</span>}
-                  {h.daysUsed !== undefined && (
-                    <span className="font-medium text-stone-600">{h.daysUsed} {h.daysUsed === 1 ? 'יום' : 'ימים'}</span>
+                  <div className="flex items-center flex-wrap gap-x-3 gap-y-1 mt-2 text-[11px] text-stone-500">
+                    {h.startDate && <span>מ-{formatDate(h.startDate)}</span>}
+                    {h.endDate && <span>עד {formatDate(h.endDate)}</span>}
+                    {h.daysUsed !== undefined && (
+                      <span className="font-medium text-stone-600">
+                        {h.daysUsed}{h.goalDays ? `/${h.goalDays}` : ''} {h.daysUsed === 1 ? 'יום' : 'ימים'}
+                      </span>
+                    )}
+                    {priceStr && (
+                      <span className="font-medium text-stone-600">
+                        · {priceStr}{cpdStr ? ` (${cpdStr})` : ''}
+                      </span>
+                    )}
+                  </div>
+                  {h.note && (
+                    <div className="text-xs text-stone-600 mt-2 bg-stone-50 rounded-xl p-2 italic">"{h.note}"</div>
                   )}
                 </div>
-                {h.note && (
-                  <div className="text-xs text-stone-600 mt-2 bg-stone-50 rounded-xl p-2 italic">"{h.note}"</div>
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
@@ -1082,7 +1152,7 @@ function ArchivePanel({ data, onClose, onRestoreStep, onDeletePermanent, onExpor
               className="w-full py-3 rounded-2xl bg-emerald-500 text-white font-medium hover:bg-emerald-600 shadow-sm active:scale-[0.98] transition-all flex items-center justify-center gap-2"
             >
               <Icon name="download" className="w-4 h-4" />
-              ייצוא נתונים (JSON)
+              גיבוי נתונים (JSON)
             </button>
             <label className="block">
               <input
@@ -1108,7 +1178,7 @@ function ArchivePanel({ data, onClose, onRestoreStep, onDeletePermanent, onExpor
               />
               <span className="block w-full py-3 rounded-2xl bg-stone-100 text-stone-700 font-medium hover:bg-stone-200 cursor-pointer transition-all flex items-center justify-center gap-2">
                 <Icon name="upload" className="w-4 h-4" />
-                ייבוא גיבוי (JSON)
+                שחזור מגיבוי (JSON)
               </span>
             </label>
             <div className="text-[11px] text-stone-500 text-center leading-relaxed">
@@ -1423,6 +1493,7 @@ function App() {
             name: payload.productName,
             goal: payload.goal || null,
             goalDays: payload.goalDays ?? null,
+            price: payload.price ?? null,
             slotStartDate: today,
             goalStartDate: existingWithGoal ? existingWithGoal.goalStartDate : today,
             history: [],
@@ -1461,17 +1532,74 @@ function App() {
   const handleEditStep = (kind, originalStep, payload) => {
     setData(prev => {
       const next = { ...prev };
+      const today = todayKey();
       const stepsKey = kind === 'morning' ? 'morningSteps' : 'eveningSteps';
+
+      // Determine product handling
+      const oldProductId = originalStep.productId;
+      const oldProduct = oldProductId ? next.products[oldProductId] : null;
+      const newProductName = payload.productName;
+      const hadProduct = !!oldProductId;
+      const wantsProduct = !!newProductName;
+
+      let updatedProductId = oldProductId;
+
+      if (!hadProduct && wantsProduct) {
+        // Create new product
+        const newId = uid();
+        const existingWithGoal = payload.goal
+          ? Object.values(next.products).find(p => p.goal === payload.goal)
+          : null;
+        next.products = {
+          ...next.products,
+          [newId]: {
+            id: newId,
+            name: newProductName,
+            goal: payload.goal || null,
+            goalDays: payload.goalDays ?? null,
+            price: payload.price ?? null,
+            slotStartDate: today,
+            goalStartDate: existingWithGoal ? existingWithGoal.goalStartDate : (payload.goal ? today : null),
+            history: [],
+          }
+        };
+        updatedProductId = newId;
+      } else if (hadProduct && !wantsProduct) {
+        // Unlink product (don't delete - keep for archive)
+        updatedProductId = null;
+      } else if (hadProduct && wantsProduct) {
+        // Update existing product (rename / change goal / change price)
+        const goalChanged = oldProduct.goal !== payload.goal;
+        let newGoalStartDate = oldProduct.goalStartDate;
+        if (goalChanged) {
+          const otherWithGoal = payload.goal
+            ? Object.values(next.products).find(p => p.id !== oldProductId && p.goal === payload.goal)
+            : null;
+          newGoalStartDate = otherWithGoal ? otherWithGoal.goalStartDate : (payload.goal ? today : null);
+        }
+        next.products = {
+          ...next.products,
+          [oldProductId]: {
+            ...oldProduct,
+            name: newProductName,
+            goal: payload.goal || null,
+            goalDays: payload.goalDays ?? null,
+            price: payload.price ?? null,
+            goalStartDate: newGoalStartDate,
+          }
+        };
+      }
+
+      // Update the step
       next[stepsKey] = next[stepsKey].map(s => s.id === originalStep.id ? {
         ...s,
         name: payload.name,
         instructions: payload.instructions,
         optional: payload.optional,
         days: payload.days,
+        productId: updatedProductId,
       } : s);
 
-      // If step has a productId and a productName was changed in dialog, update it
-      // (We don't rename the product through the step edit dialog; that's done via Edit Product)
       return next;
     });
     setEditStep(null);
@@ -1522,6 +1650,7 @@ function App() {
         note: payload.note,
         goal: existing.goal,
         goalDays: existing.goalDays,
+        price: existing.price ?? null,
         startDate: existing.slotStartDate,
         endDate: today,
         daysUsed,
@@ -1550,6 +1679,7 @@ function App() {
           name: payload.newName,
           goal: payload.newGoal,
           goalDays: payload.newGoalDays,
+          price: payload.newPrice ?? null,
           slotStartDate: today,
           goalStartDate: newGoalStartDate,
           history: [...(existing.history || []), historyEntry],
@@ -1763,35 +1893,34 @@ function App() {
         />
       )}
 
-      {editStep && (
-        <StepDialog
-          mode="edit"
-          kind={editStep.kind}
-          currentDay={currentDay}
-          existingSteps={editStep.kind === 'morning' ? data.morningSteps : data.eveningSteps}
-          initial={{
-            name: editStep.step.name,
-            productName: '', // not used in edit mode (rename via Edit Product)
-            instructions: editStep.step.instructions,
-            optional: editStep.step.optional,
-            days: editStep.step.days,
-          }}
-          onClose={() => setEditStep(null)}
-          onConfirm={(payload) => handleEditStep(editStep.kind, editStep.step, payload)}
-        />
-      )}
-
-      {editProduct && editProduct.product && (
-        <EditProductDialog
-          product={editProduct.product}
-          onClose={() => setEditProduct(null)}
-          onConfirm={(payload) => handleEditProduct(editProduct.product, payload)}
-        />
-      )}
+      {editStep && (() => {
+        const linkedProduct = editStep.step.productId ? data.products[editStep.step.productId] : null;
+        return (
+          <StepDialog
+            mode="edit"
+            kind={editStep.kind}
+            currentDay={currentDay}
+            existingSteps={editStep.kind === 'morning' ? data.morningSteps : data.eveningSteps}
+            initial={{
+              name: editStep.step.name,
+              productName: linkedProduct?.name || '',
+              instructions: editStep.step.instructions,
+              optional: editStep.step.optional,
+              days: editStep.step.days,
+              goal: linkedProduct?.goal ?? null,
+              goalDays: linkedProduct?.goalDays ?? null,
+              price: linkedProduct?.price ?? null,
+            }}
+            onClose={() => setEditStep(null)}
+            onConfirm={(payload) => handleEditStep(editStep.kind, editStep.step, payload)}
+          />
+        );
+      })()}
 
       {replaceProduct && replaceProduct.product && (
         <ReplaceProductDialog
           product={replaceProduct.product}
+          daysUsed={countProductDays(data, replaceProduct.product.id, replaceProduct.product.slotStartDate)}
           onClose={() => setReplaceProduct(null)}
           onConfirm={(payload) => handleReplaceProduct(replaceProduct.product, payload)}
         />
@@ -1827,7 +1956,6 @@ function App() {
             stepName={openStep.name}
             onClose={() => setOpenMenuId(null)}
             onEdit={() => { setOpenMenuId(null); setEditStep({ kind, step: openStep }); }}
-            onEditProduct={product ? () => { setOpenMenuId(null); setEditProduct({ product }); } : null}
             onReplace={product ? () => { setOpenMenuId(null); setReplaceProduct({ product }); } : null}
             onMoveUp={fullIdx > 0 ? () => handleMoveStep(kind, openStep.id, -1) : null}
             onMoveDown={fullIdx < list.length - 1 ? () => handleMoveStep(kind, openStep.id, 1) : null}
