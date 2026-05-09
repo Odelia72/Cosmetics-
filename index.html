@@ -506,67 +506,83 @@ function Modal({ children, onClose, title }) {
   );
 }
 
-// ============== STEP ACTIONS MENU ==============
-function StepActionsMenu({ onClose, onEdit, onEditProduct, onReplace, onMoveUp, onMoveDown, onArchive }) {
-  const ref = useRef(null);
-  useEffect(() => {
-    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) onClose(); };
-    setTimeout(() => document.addEventListener('mousedown', handler), 0);
-    return () => document.removeEventListener('mousedown', handler);
-  }, [onClose]);
-
+// ============== STEP ACTIONS SHEET (bottom sheet modal) ==============
+function StepActionsSheet({ stepName, onClose, onEdit, onEditProduct, onReplace, onMoveUp, onMoveDown, onArchive }) {
   return (
-    <div ref={ref} className="absolute z-30 left-0 top-9 bg-white rounded-2xl shadow-xl border border-stone-200 p-2 anim-fade-in" style={{ minWidth: 240 }}>
-      <div className="flex flex-col gap-0.5">
-        <div className="flex gap-1">
+    <Modal title={stepName ? `פעולות: ${stepName}` : 'פעולות'} onClose={onClose}>
+      <div className="flex flex-col gap-2">
+        <div className="flex gap-2">
           <button
             onClick={() => { if (onMoveUp) { onMoveUp(); onClose(); } }}
             disabled={!onMoveUp}
-            className={`flex-1 text-xs flex items-center justify-center gap-1 py-2 rounded-xl ${
-              onMoveUp ? 'bg-stone-50 text-stone-700 hover:bg-stone-100' : 'bg-stone-50 text-stone-300 cursor-not-allowed'
+            className={`flex-1 text-sm flex items-center justify-center gap-2 py-3 rounded-2xl transition-colors ${
+              onMoveUp ? 'bg-stone-100 text-stone-700 hover:bg-stone-200' : 'bg-stone-50 text-stone-300 cursor-not-allowed'
             }`}
           >
-            <Icon name="arrowUp" className="w-3.5 h-3.5" />
+            <Icon name="arrowUp" className="w-4 h-4" />
             <span>למעלה</span>
           </button>
           <button
             onClick={() => { if (onMoveDown) { onMoveDown(); onClose(); } }}
             disabled={!onMoveDown}
-            className={`flex-1 text-xs flex items-center justify-center gap-1 py-2 rounded-xl ${
-              onMoveDown ? 'bg-stone-50 text-stone-700 hover:bg-stone-100' : 'bg-stone-50 text-stone-300 cursor-not-allowed'
+            className={`flex-1 text-sm flex items-center justify-center gap-2 py-3 rounded-2xl transition-colors ${
+              onMoveDown ? 'bg-stone-100 text-stone-700 hover:bg-stone-200' : 'bg-stone-50 text-stone-300 cursor-not-allowed'
             }`}
           >
-            <Icon name="arrowDown" className="w-3.5 h-3.5" />
+            <Icon name="arrowDown" className="w-4 h-4" />
             <span>למטה</span>
           </button>
         </div>
-        <button onClick={() => { onEdit(); onClose(); }} className="text-right text-sm flex items-center gap-2 text-stone-700 hover:bg-emerald-50 hover:text-emerald-700 p-2.5 rounded-xl transition-colors">
-          <Icon name="edit" className="w-4 h-4" />
+
+        <button
+          onClick={() => { onEdit(); onClose(); }}
+          className="text-right text-base flex items-center gap-3 text-stone-700 hover:bg-emerald-50 hover:text-emerald-700 p-3.5 rounded-2xl transition-colors border border-stone-100"
+        >
+          <Icon name="edit" className="w-5 h-5 flex-shrink-0" />
           <span>ערכי שלב (שם, פירוט, ימים)</span>
         </button>
+
         {onEditProduct && (
-          <button onClick={() => { onEditProduct(); onClose(); }} className="text-right text-sm flex items-center gap-2 text-stone-700 hover:bg-emerald-50 hover:text-emerald-700 p-2.5 rounded-xl transition-colors">
-            <Icon name="target" className="w-4 h-4" />
+          <button
+            onClick={() => { onEditProduct(); onClose(); }}
+            className="text-right text-base flex items-center gap-3 text-stone-700 hover:bg-emerald-50 hover:text-emerald-700 p-3.5 rounded-2xl transition-colors border border-stone-100"
+          >
+            <Icon name="target" className="w-5 h-5 flex-shrink-0" />
             <span>ערכי פרטי מוצר (מטרה, זמן)</span>
           </button>
         )}
+
         {onReplace && (
-          <button onClick={() => { onReplace(); onClose(); }} className="text-right text-sm flex items-center gap-2 text-stone-700 hover:bg-rose-50 hover:text-rose-700 p-2.5 rounded-xl transition-colors">
-            <Icon name="rotate" className="w-4 h-4" />
+          <button
+            onClick={() => { onReplace(); onClose(); }}
+            className="text-right text-base flex items-center gap-3 text-stone-700 hover:bg-rose-50 hover:text-rose-700 p-3.5 rounded-2xl transition-colors border border-stone-100"
+          >
+            <Icon name="rotate" className="w-5 h-5 flex-shrink-0" />
             <span>החליפי מוצר ושמרי בארכיון</span>
           </button>
         )}
-        <button onClick={() => { onArchive(); onClose(); }} className="text-right text-sm flex items-center gap-2 text-stone-700 hover:bg-rose-50 hover:text-rose-700 p-2.5 rounded-xl transition-colors">
-          <Icon name="trash" className="w-4 h-4" />
+
+        <button
+          onClick={() => { onArchive(); onClose(); }}
+          className="text-right text-base flex items-center gap-3 text-rose-600 hover:bg-rose-50 p-3.5 rounded-2xl transition-colors border border-rose-100"
+        >
+          <Icon name="trash" className="w-5 h-5 flex-shrink-0" />
           <span>הסירי את הצעד הזה</span>
         </button>
+
+        <button
+          onClick={onClose}
+          className="mt-2 py-3 rounded-2xl bg-stone-100 text-stone-700 font-medium hover:bg-stone-200 transition-colors"
+        >
+          ביטול
+        </button>
       </div>
-    </div>
+    </Modal>
   );
 }
 
 // ============== STEP ROW ==============
-function StepRow({ step, product, isChecked, onToggle, onOpenActions, onEdit, onEditProduct, onReplace, onMoveUp, onMoveDown, onArchive, allData, isMenuOpen }) {
+function StepRow({ step, product, isChecked, onToggle, onOpenActions, onEdit, onEditProduct, onReplace, onMoveUp, onMoveDown, onArchive, allData }) {
   // Counters
   const productDays = product ? countProductDays(allData, product.id, product.slotStartDate) : 0;
   const goal = product?.goal ? goalById(product.goal) : null;
@@ -628,18 +644,6 @@ function StepRow({ step, product, isChecked, onToggle, onOpenActions, onEdit, on
           <Icon name="pencil" className="w-4 h-4" />
         </button>
       </div>
-
-      {isMenuOpen && (
-        <StepActionsMenu
-          onClose={() => onOpenActions(null)}
-          onEdit={onEdit}
-          onEditProduct={product ? onEditProduct : null}
-          onReplace={product ? onReplace : null}
-          onMoveUp={onMoveUp}
-          onMoveDown={onMoveDown}
-          onArchive={onArchive}
-        />
-      )}
     </div>
   );
 }
@@ -1239,7 +1243,6 @@ function RoutineSection({ kind, steps, products, completions, currentDay, dateKe
           )}
           {activeSteps.map((step, idx) => {
             const product = step.productId ? products[step.productId] : null;
-            const isMenuOpen = openMenuId === step.id;
             // Move arrows: position within all steps (regardless of day filter)
             const fullIdx = steps.findIndex(s => s.id === step.id);
             return (
@@ -1249,7 +1252,7 @@ function RoutineSection({ kind, steps, products, completions, currentDay, dateKe
                 product={product}
                 isChecked={checkedIds.has(step.id)}
                 onToggle={() => onToggleStep(step.id)}
-                onOpenActions={(val) => onOpenMenu(val === null ? null : (isMenuOpen ? null : step.id))}
+                onOpenActions={() => onOpenMenu(step.id)}
                 onEdit={() => onEditStep(step)}
                 onEditProduct={product ? () => onEditProduct(step) : null}
                 onReplace={product ? () => onReplaceProduct(step) : null}
@@ -1257,7 +1260,6 @@ function RoutineSection({ kind, steps, products, completions, currentDay, dateKe
                 onMoveDown={fullIdx < steps.length - 1 ? () => onMoveStep(step.id, 1) : null}
                 onArchive={() => onArchiveStep(step)}
                 allData={allData}
-                isMenuOpen={isMenuOpen}
               />
             );
           })}
@@ -1805,6 +1807,34 @@ function App() {
           onImport={handleImport}
         />
       )}
+
+      {openMenuId && (() => {
+        // Find the step + which list it's in
+        let openStep = data.morningSteps.find(s => s.id === openMenuId);
+        let kind = 'morning';
+        if (!openStep) {
+          openStep = data.eveningSteps.find(s => s.id === openMenuId);
+          kind = 'evening';
+        }
+        if (!openStep) return null;
+
+        const product = openStep.productId ? data.products[openStep.productId] : null;
+        const list = kind === 'morning' ? data.morningSteps : data.eveningSteps;
+        const fullIdx = list.findIndex(s => s.id === openStep.id);
+
+        return (
+          <StepActionsSheet
+            stepName={openStep.name}
+            onClose={() => setOpenMenuId(null)}
+            onEdit={() => { setOpenMenuId(null); setEditStep({ kind, step: openStep }); }}
+            onEditProduct={product ? () => { setOpenMenuId(null); setEditProduct({ product }); } : null}
+            onReplace={product ? () => { setOpenMenuId(null); setReplaceProduct({ product }); } : null}
+            onMoveUp={fullIdx > 0 ? () => handleMoveStep(kind, openStep.id, -1) : null}
+            onMoveDown={fullIdx < list.length - 1 ? () => handleMoveStep(kind, openStep.id, 1) : null}
+            onArchive={() => { setOpenMenuId(null); handleArchiveStep(kind, openStep); }}
+          />
+        );
+      })()}
     </div>
   );
 }
