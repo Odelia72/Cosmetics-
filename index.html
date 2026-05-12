@@ -130,7 +130,7 @@ const Icon = ({ name, className = "w-5 h-5", strokeWidth = 2 }) => {
 
 // ============== CONSTANTS ==============
 const STORAGE_KEY = 'skincare-tracker-v1';
-const APP_VERSION = 2;
+const APP_VERSION = 3;
 
 const DAYS_HE = ['א\'', 'ב\'', 'ג\'', 'ד\'', 'ה\'', 'ו\'', 'ש\''];
 const DAYS_FULL_HE = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
@@ -159,6 +159,9 @@ const SKIN_TAGS = [
   { id: 'pimples', label: 'פצעונים', color: 'bg-pink-100 text-pink-800 border-pink-300' },
   { id: 'sensitive', label: 'רגיש',  color: 'bg-purple-100 text-purple-800 border-purple-300' },
   { id: 'glow',    label: 'זוהר',    color: 'bg-teal-100 text-teal-800 border-teal-300' },
+  { id: 'clean',   label: 'נקי',     color: 'bg-sky-100 text-sky-800 border-sky-300' },
+  { id: 'hydrated',label: 'לח',      color: 'bg-cyan-100 text-cyan-800 border-cyan-300' },
+  { id: 'supple',  label: 'גמיש',    color: 'bg-lime-100 text-lime-800 border-lime-300' },
 ];
 
 // ============== HELPERS ==============
@@ -194,18 +197,18 @@ function buildDefaultData() {
   const today = todayKey();
 
   const products = {
-    cerave:    { id: 'cerave',    name: 'CeraVe',                 goal: 'cleansing',   goalDays: null, slotStartDate: today, goalStartDate: today, price: null, history: [] },
-    snail:     { id: 'snail',     name: 'נוזל חלזונות',            goal: 'hydration',   goalDays: 14,   slotStartDate: today, goalStartDate: today, price: null, history: [] },
-    ceramide:  { id: 'ceramide',  name: 'Q+A Ceramide',           goal: 'hydration',   goalDays: 14,   slotStartDate: today, goalStartDate: today, price: null, history: [] },
-    rosehip:   { id: 'rosehip',   name: 'שמן רוזהיפ',              goal: 'nourishing',  goalDays: 14,   slotStartDate: today, goalStartDate: today, price: null, history: [] },
-    spf:       { id: 'spf',       name: 'Dermalogica SPF 50',     goal: 'protection',  goalDays: null, slotStartDate: today, goalStartDate: today, price: null, history: [] },
-    body:      { id: 'body',      name: 'קרם גוף + שמן שקדים',    goal: 'nourishing',  goalDays: null, slotStartDate: today, goalStartDate: today, price: null, history: [] },
-    makeup:    { id: 'makeup',    name: 'הסרת איפור',              goal: 'cleansing',   goalDays: null, slotStartDate: today, goalStartDate: today, price: null, history: [] },
-    lunar:     { id: 'lunar',     name: 'Lunar Bliss',            goal: 'hydration',   goalDays: 14,   slotStartDate: today, goalStartDate: today, price: null, history: [] },
-    retinol:   { id: 'retinol',   name: 'רטינול Advanced Clinicals', goal: 'antiaging', goalDays: 90, slotStartDate: today, goalStartDate: today, price: null, history: [] },
-    superfood: { id: 'superfood', name: 'Super Food Oil',         goal: 'nourishing',  goalDays: 14,   slotStartDate: today, goalStartDate: today, price: null, history: [] },
-    guasha:    { id: 'guasha',    name: 'גואה שה (אבן רוז קוורץ)', goal: 'firming',    goalDays: 60,   slotStartDate: today, goalStartDate: today, price: null, history: [] },
-    mask:      { id: 'mask',      name: 'Vitamin A.C.E. מסכה',    goal: 'brightening', goalDays: 60,   slotStartDate: today, goalStartDate: today, price: null, history: [] },
+    cerave:    { id: 'cerave',    name: 'CeraVe',                 goal: 'cleansing',   goalDays: null, slotStartDate: today, goalStartDate: today, price: null, notes: '', history: [] },
+    snail:     { id: 'snail',     name: 'נוזל חלזונות',            goal: 'hydration',   goalDays: 14,   slotStartDate: today, goalStartDate: today, price: null, notes: '', history: [] },
+    ceramide:  { id: 'ceramide',  name: 'Q+A Ceramide',           goal: 'hydration',   goalDays: 14,   slotStartDate: today, goalStartDate: today, price: null, notes: '', history: [] },
+    rosehip:   { id: 'rosehip',   name: 'שמן רוזהיפ',              goal: 'nourishing',  goalDays: 14,   slotStartDate: today, goalStartDate: today, price: null, notes: '', history: [] },
+    spf:       { id: 'spf',       name: 'Dermalogica SPF 50',     goal: 'protection',  goalDays: null, slotStartDate: today, goalStartDate: today, price: null, notes: '', history: [] },
+    body:      { id: 'body',      name: 'קרם גוף + שמן שקדים',    goal: 'nourishing',  goalDays: null, slotStartDate: today, goalStartDate: today, price: null, notes: '', history: [] },
+    makeup:    { id: 'makeup',    name: 'הסרת איפור',              goal: 'cleansing',   goalDays: null, slotStartDate: today, goalStartDate: today, price: null, notes: '', history: [] },
+    lunar:     { id: 'lunar',     name: 'Lunar Bliss',            goal: 'hydration',   goalDays: 14,   slotStartDate: today, goalStartDate: today, price: null, notes: '', history: [] },
+    retinol:   { id: 'retinol',   name: 'רטינול Advanced Clinicals', goal: 'antiaging', goalDays: 90, slotStartDate: today, goalStartDate: today, price: null, notes: '', history: [] },
+    superfood: { id: 'superfood', name: 'Super Food Oil',         goal: 'nourishing',  goalDays: 14,   slotStartDate: today, goalStartDate: today, price: null, notes: '', history: [] },
+    guasha:    { id: 'guasha',    name: 'גואה שה (אבן רוז קוורץ)', goal: 'firming',    goalDays: 60,   slotStartDate: today, goalStartDate: today, price: null, notes: '', history: [] },
+    mask:      { id: 'mask',      name: 'Vitamin A.C.E. מסכה',    goal: 'brightening', goalDays: 60,   slotStartDate: today, goalStartDate: today, price: null, notes: '', history: [] },
   };
 
   const morningSteps = [
@@ -220,54 +223,86 @@ function buildDefaultData() {
   const eveningSteps = [
     { id: uid(), name: 'הסרת איפור',    productId: 'makeup',    optional: false, instructions: '',                      days: allDays },
     { id: uid(), name: 'ניקוי פנים',     productId: 'cerave',   optional: false, instructions: '',                      days: allDays },
-    // Sun, Tue, Wed: Lunar Bliss
     { id: uid(), name: 'קרם לילה',       productId: 'lunar',    optional: false, instructions: 'Lunar Bliss',           days: [0, 2, 3] },
-    // Mon, Thu: Retinol
     { id: uid(), name: 'רטינול',         productId: 'retinol',  optional: false, instructions: 'אחת ל-3 ימים',          days: [1, 4] },
-    // Tue: Gua Sha
     { id: uid(), name: 'גואה שה',        productId: 'guasha',   optional: true,  instructions: 'עיסוי פנים',             days: [2] },
-    // Fri: Treat night
     { id: uid(), name: 'שמן הזנה',       productId: 'superfood',optional: false, instructions: 'ערב פינוק',              days: [5] },
     { id: uid(), name: 'קרם הזנה עשיר',  productId: 'ceramide', optional: false, instructions: 'ערב פינוק',              days: [5] },
-    // Sat: Mask
     { id: uid(), name: 'מסכת ויטמין',    productId: 'mask',     optional: false, instructions: 'Vitamin A.C.E.',         days: [6] },
     { id: uid(), name: 'קרם לילה',       productId: 'lunar',    optional: false, instructions: '',                       days: [6] },
   ];
 
+  const defaultTripId = 'home';
+
   return {
     version: APP_VERSION,
     products,
-    morningSteps,
-    eveningSteps,
+    trips: {
+      [defaultTripId]: {
+        id: defaultTripId,
+        name: 'ארץ',
+        isDefault: true,
+        startDate: null,
+        endDate: null,
+        morningSteps,
+        eveningSteps,
+      }
+    },
+    tripOrder: [defaultTripId],
+    currentTripId: defaultTripId,
     completions: {},     // { 'YYYY-MM-DD': { morning: [stepId,...], evening: [stepId,...] } }
     skinJournal: {},     // { 'YYYY-MM-DD': { tags: [...], note: '...', savedAt: timestamp } }
-    archivedSteps: [],   // [{ ...stepData, type: 'morning'|'evening', archivedAt }]
+    archivedSteps: [],   // [{ ...stepData, type: 'morning'|'evening', archivedAt, tripId }]
+    dismissedTripBanners: {}, // { 'tripId-start' | 'tripId-end': true }
   };
 }
 
-// ============== MIGRATION (best-effort from v1) ==============
+// ============== MIGRATION ==============
 function migrate(data) {
-  if (!data || data.version === APP_VERSION) return data;
+  if (!data) return buildDefaultData();
+  if (data.version === APP_VERSION) return data;
 
-  // If no version field — old v1 format. Try to preserve completions + skinJournal if present.
   try {
-    const fresh = buildDefaultData();
-    if (data.completions && typeof data.completions === 'object') {
-      fresh.completions = data.completions;
-    }
-    if (data.skinJournal && typeof data.skinJournal === 'object') {
-      fresh.skinJournal = data.skinJournal;
-    }
-    // Try preserving products' basic data + history if structurally compatible
-    if (data.products && typeof data.products === 'object') {
-      Object.entries(data.products).forEach(([key, p]) => {
-        if (fresh.products[key] && p && typeof p === 'object') {
-          if (typeof p.name === 'string') fresh.products[key].name = p.name;
-          if (Array.isArray(p.history)) fresh.products[key].history = p.history;
-          if (p.startDate) fresh.products[key].slotStartDate = p.startDate;
-        }
+    // ---- v2 -> v3: wrap steps in default trip ----
+    if (data.version === 2 || (!data.version && data.morningSteps)) {
+      const defaultTripId = 'home';
+      const ms = Array.isArray(data.morningSteps) ? data.morningSteps : [];
+      const es = Array.isArray(data.eveningSteps) ? data.eveningSteps : [];
+      const products = (data.products && typeof data.products === 'object') ? data.products : {};
+
+      // Make sure products have notes field
+      const productsWithNotes = {};
+      Object.entries(products).forEach(([k, p]) => {
+        productsWithNotes[k] = { ...p, notes: p.notes || '' };
       });
+
+      return {
+        version: APP_VERSION,
+        products: productsWithNotes,
+        trips: {
+          [defaultTripId]: {
+            id: defaultTripId,
+            name: 'ארץ',
+            isDefault: true,
+            startDate: null,
+            endDate: null,
+            morningSteps: ms,
+            eveningSteps: es,
+          }
+        },
+        tripOrder: [defaultTripId],
+        currentTripId: defaultTripId,
+        completions: data.completions || {},
+        skinJournal: data.skinJournal || {},
+        archivedSteps: Array.isArray(data.archivedSteps) ? data.archivedSteps.map(s => ({ ...s, tripId: s.tripId || defaultTripId })) : [],
+        dismissedTripBanners: {},
+      };
     }
+
+    // ---- v1 -> v3: very old format, just build fresh ----
+    const fresh = buildDefaultData();
+    if (data.completions) fresh.completions = data.completions;
+    if (data.skinJournal) fresh.skinJournal = data.skinJournal;
     return fresh;
   } catch (e) {
     return buildDefaultData();
@@ -295,37 +330,64 @@ function useStorage() {
 }
 
 // ============== STEP / GOAL COUNTERS ==============
+// Helper: gather ALL step IDs (across all trips) that reference a given productId
+function getStepIdsForProduct(data, productId) {
+  const ids = [];
+  Object.values(data.trips || {}).forEach(trip => {
+    (trip.morningSteps || []).forEach(s => { if (s.productId === productId) ids.push(s.id); });
+    (trip.eveningSteps || []).forEach(s => { if (s.productId === productId) ids.push(s.id); });
+  });
+  return ids;
+}
+
+// Helper: gather ALL step IDs (across all trips) that reference any product matching a goal
+function getStepIdsForGoal(data, goalId) {
+  const productsWithGoal = Object.values(data.products || {}).filter(p => p.goal === goalId).map(p => p.id);
+  if (productsWithGoal.length === 0) return [];
+  const ids = [];
+  Object.values(data.trips || {}).forEach(trip => {
+    (trip.morningSteps || []).forEach(s => { if (productsWithGoal.includes(s.productId)) ids.push(s.id); });
+    (trip.eveningSteps || []).forEach(s => { if (productsWithGoal.includes(s.productId)) ids.push(s.id); });
+  });
+  return ids;
+}
+
+// Count days the user actually checked off this product, in retrospect.
+// slotStartDate acts as a soft floor: counts the earliest of (slotStartDate, earliest matching completion).
+// This way retroactive checks are honored.
 function countProductDays(data, productId, slotStartDate) {
-  if (!productId || !slotStartDate) return 0;
+  if (!productId) return 0;
+  const stepIds = getStepIdsForProduct(data, productId);
+  if (stepIds.length === 0) return 0;
   const days = new Set();
-  Object.entries(data.completions).forEach(([date, c]) => {
-    if (date < slotStartDate) return;
+  Object.entries(data.completions || {}).forEach(([date, c]) => {
     const all = [...(c.morning || []), ...(c.evening || [])];
-    // a step uses this product if it's currently linked
-    const stepIdsForProduct = [
-      ...data.morningSteps.filter(s => s.productId === productId).map(s => s.id),
-      ...data.eveningSteps.filter(s => s.productId === productId).map(s => s.id),
-    ];
-    if (all.some(id => stepIdsForProduct.includes(id))) days.add(date);
+    if (all.some(id => stepIds.includes(id))) days.add(date);
   });
   return days.size;
 }
 
 function countGoalDays(data, goalId, goalStartDate) {
-  if (!goalId || !goalStartDate) return 0;
-  const productsWithGoal = Object.values(data.products).filter(p => p.goal === goalId).map(p => p.id);
-  if (productsWithGoal.length === 0) return 0;
-  const stepIds = [
-    ...data.morningSteps.filter(s => productsWithGoal.includes(s.productId)).map(s => s.id),
-    ...data.eveningSteps.filter(s => productsWithGoal.includes(s.productId)).map(s => s.id),
-  ];
+  if (!goalId) return 0;
+  const stepIds = getStepIdsForGoal(data, goalId);
+  if (stepIds.length === 0) return 0;
   const days = new Set();
-  Object.entries(data.completions).forEach(([date, c]) => {
-    if (date < goalStartDate) return;
+  Object.entries(data.completions || {}).forEach(([date, c]) => {
     const all = [...(c.morning || []), ...(c.evening || [])];
     if (all.some(id => stepIds.includes(id))) days.add(date);
   });
   return days.size;
+}
+
+// Helper: find a step by ID across all trips (returns { trip, kind, step } or null)
+function findStepAcrossTrips(data, stepId) {
+  for (const trip of Object.values(data.trips || {})) {
+    const m = (trip.morningSteps || []).find(s => s.id === stepId);
+    if (m) return { trip, kind: 'morning', step: m };
+    const e = (trip.eveningSteps || []).find(s => s.id === stepId);
+    if (e) return { trip, kind: 'evening', step: e };
+  }
+  return null;
 }
 
 // ============== STAR RATING ==============
@@ -504,6 +566,24 @@ function PriceField({ price, onChange }) {
   );
 }
 
+// ============== PRODUCT NOTES FIELD ==============
+function ProductNotesField({ notes, onChange }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium text-stone-700 mb-2">על מה הקרם עובד? (טקסט חופשי)</label>
+      <textarea
+        value={notes ?? ''}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="למשל: מבהיר כתמים סביב הפה, מצמצם נקבוביות באף..."
+        className="w-full p-3 border border-stone-200 rounded-2xl text-sm resize-none bg-stone-50/50 focus:outline-none focus:border-emerald-300"
+        rows={2}
+        style={{ fontFamily: "'Heebo', sans-serif" }}
+      />
+      <p className="text-xs text-stone-500 mt-1.5">תיאור מפורט שלא תלוי במטרה המובנית</p>
+    </div>
+  );
+}
+
 // ============== FORMAT PRICE / COST PER DAY ==============
 function formatPrice(p) {
   if (p === null || p === undefined) return null;
@@ -670,7 +750,7 @@ function StepRow({ step, product, isChecked, onToggle, onOpenActions, onEdit, on
 }
 
 // ============== ADD/EDIT STEP DIALOG ==============
-function StepDialog({ mode, kind, currentDay, existingSteps, initial, onClose, onConfirm }) {
+function StepDialog({ mode, kind, currentDay, existingSteps, initial, productSuggestions, onClose, onConfirm }) {
   // mode: 'add' | 'edit'
   // kind: 'morning' | 'evening'
   const [name, setName] = useState(initial?.name || '');
@@ -686,6 +766,53 @@ function StepDialog({ mode, kind, currentDay, existingSteps, initial, onClose, o
   const [goal, setGoal] = useState(initial?.goal ?? null);
   const [goalDays, setGoalDays] = useState(initial?.goalDays ?? null);
   const [price, setPrice] = useState(initial?.price ?? null);
+  const [notes, setNotes] = useState(initial?.notes ?? '');
+
+  // Auto-complete state
+  // linkedProductId: if user picks a suggestion, this is the product ID to link to (don't create new)
+  const [linkedProductId, setLinkedProductId] = useState(initial?.linkedProductId ?? null);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const productNameInputRef = useRef(null);
+
+  // Build filtered suggestions from productName
+  const suggestions = useMemo(() => {
+    if (!productName.trim() || !productSuggestions || productSuggestions.length === 0) return [];
+    const q = productName.trim().toLowerCase();
+    // Skip the linked product itself (would be confusing to show what you already picked)
+    const matches = productSuggestions.filter(s => {
+      if (s.productId && s.productId === linkedProductId) return false;
+      return s.name.toLowerCase().includes(q);
+    });
+    // Sort: exact-prefix first, then substring
+    matches.sort((a, b) => {
+      const aStarts = a.name.toLowerCase().startsWith(q) ? 0 : 1;
+      const bStarts = b.name.toLowerCase().startsWith(q) ? 0 : 1;
+      return aStarts - bStarts;
+    });
+    return matches.slice(0, 6);
+  }, [productName, productSuggestions, linkedProductId]);
+
+  const onPickSuggestion = (s) => {
+    setProductName(s.name);
+    setGoal(s.goal ?? null);
+    setGoalDays(s.goalDays ?? null);
+    setPrice(s.price ?? null);
+    setNotes(s.notes ?? '');
+    setLinkedProductId(s.productId || null);
+    setShowSuggestions(false);
+    // Blur the input so the suggestions don't reappear
+    if (productNameInputRef.current) productNameInputRef.current.blur();
+  };
+
+  // If user manually changes the productName after picking a suggestion, unlink (they're editing the name)
+  const onProductNameChange = (val) => {
+    setProductName(val);
+    if (linkedProductId) {
+      // If they edit it, treat as wanting to create new / re-search
+      setLinkedProductId(null);
+    }
+    setShowSuggestions(true);
+  };
 
   const canSubmit = name.trim() && days.length > 0;
 
@@ -705,16 +832,59 @@ function StepDialog({ mode, kind, currentDay, existingSteps, initial, onClose, o
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-stone-700 mb-2">שם המוצר (אופציונלי)</label>
+        <div className="relative">
+          <label className="block text-sm font-medium text-stone-700 mb-2">
+            שם המוצר (אופציונלי)
+            {linkedProductId && (
+              <span className="text-[10px] mr-2 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200">
+                מחובר למוצר קיים
+              </span>
+            )}
+          </label>
           <input
+            ref={productNameInputRef}
             type="text"
             value={productName}
-            onChange={(e) => setProductName(e.target.value)}
+            onChange={(e) => onProductNameChange(e.target.value)}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 180)}
             placeholder="למשל: The Ordinary Niacinamide"
             className="w-full p-3 border border-stone-200 rounded-2xl text-sm bg-stone-50/50 focus:outline-none focus:border-rose-300"
             style={{ fontFamily: "'Heebo', sans-serif" }}
           />
+
+          {showSuggestions && suggestions.length > 0 && (
+            <div className="absolute z-20 left-0 right-0 top-full mt-1 bg-white rounded-2xl shadow-xl border border-stone-200 overflow-hidden anim-fade-in">
+              <div className="px-3 py-1.5 text-[10px] text-stone-400 bg-stone-50 border-b border-stone-100">
+                ✨ השלמה אוטומטית · לחיצה תמלא את כל הפרטים
+              </div>
+              {suggestions.map((s, idx) => (
+                <button
+                  key={s.key + '-' + idx}
+                  type="button"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => onPickSuggestion(s)}
+                  className="w-full text-right p-3 hover:bg-emerald-50 transition-colors flex items-start gap-2 border-b border-stone-100 last:border-0"
+                >
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium text-stone-800 text-sm">{s.name}</div>
+                    <div className="flex items-center flex-wrap gap-1.5 mt-0.5 text-[11px]">
+                      {s.goal && (
+                        <span className="text-emerald-700">{goalById(s.goal)?.label}</span>
+                      )}
+                      {s.archived && (
+                        <span className="text-amber-700">· מהארכיון</span>
+                      )}
+                      {s.price && (
+                        <span className="text-stone-500">· {formatPrice(s.price)}</span>
+                      )}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+
           {mode === 'edit' && initial?.productName && (
             <p className="text-xs text-stone-500 mt-1.5 leading-relaxed">
               💡 לתיקון איות / שינוי שם בלבד. אם <strong>נגמר</strong> ואת מחליפה למותג אחר - השתמשי ב<strong>"החליפי מוצר"</strong> במקום (כדי לשמור את ההיסטוריה והדירוג).
@@ -731,11 +901,12 @@ function StepDialog({ mode, kind, currentDay, existingSteps, initial, onClose, o
               onGoalDaysChange={setGoalDays}
             />
             <PriceField price={price} onChange={setPrice} />
+            <ProductNotesField notes={notes} onChange={setNotes} />
           </>
         )}
 
         <div>
-          <label className="block text-sm font-medium text-stone-700 mb-2">פירוט (אופציונלי)</label>
+          <label className="block text-sm font-medium text-stone-700 mb-2">פירוט - הוראות שימוש (אופציונלי)</label>
           <textarea
             value={instructions}
             onChange={(e) => setInstructions(e.target.value)}
@@ -778,6 +949,8 @@ function StepDialog({ mode, kind, currentDay, existingSteps, initial, onClose, o
               goal,
               goalDays,
               price,
+              notes: notes.trim(),
+              linkedProductId,
             })}
             disabled={!canSubmit}
             className={`flex-1 py-3 rounded-2xl font-medium transition-all ${
@@ -847,6 +1020,7 @@ function ReplaceProductDialog({ product, daysUsed, onClose, onConfirm }) {
   const [newGoal, setNewGoal] = useState(product?.goal ?? null);
   const [newGoalDays, setNewGoalDays] = useState(product?.goalDays ?? null);
   const [newPrice, setNewPrice] = useState(null);
+  const [newNotes, setNewNotes] = useState('');
 
   const canSubmit = newName.trim() && rating > 0;
 
@@ -933,6 +1107,9 @@ function ReplaceProductDialog({ product, daysUsed, onClose, onConfirm }) {
           <div className="mt-3">
             <PriceField price={newPrice} onChange={setNewPrice} />
           </div>
+          <div className="mt-3">
+            <ProductNotesField notes={newNotes} onChange={setNewNotes} />
+          </div>
         </div>
 
         <div className="text-xs text-stone-600 leading-relaxed bg-emerald-50/40 p-2.5 rounded-xl border border-emerald-100/50">
@@ -944,7 +1121,7 @@ function ReplaceProductDialog({ product, daysUsed, onClose, onConfirm }) {
             ביטול
           </button>
           <button
-            onClick={() => canSubmit && onConfirm({ rating, note: note.trim(), newName: newName.trim(), newGoal, newGoalDays, newPrice })}
+            onClick={() => canSubmit && onConfirm({ rating, note: note.trim(), newName: newName.trim(), newGoal, newGoalDays, newPrice, newNotes: newNotes.trim() })}
             disabled={!canSubmit}
             className={`flex-1 py-3 rounded-2xl font-medium transition-all ${
               canSubmit ? 'bg-rose-500 text-white hover:bg-rose-600 shadow-sm active:scale-[0.98]' : 'bg-stone-200 text-stone-400 cursor-not-allowed'
@@ -1347,6 +1524,296 @@ function RoutineSection({ kind, steps, products, completions, currentDay, dateKe
 }
 
 
+// ============== TRIP SWITCHER (segmented control) ==============
+function TripSwitcher({ trips, tripOrder, currentTripId, onSwitch, onManage }) {
+  const list = (tripOrder || []).map(id => trips[id]).filter(Boolean);
+  if (list.length === 0) return null;
+  return (
+    <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-1.5 mb-3 shadow-sm border border-stone-200/40">
+      <div className="flex items-center gap-1">
+        <div className="flex-1 flex gap-1 overflow-x-auto scrollbar-thin">
+          {list.map(t => {
+            const active = t.id === currentTripId;
+            return (
+              <button
+                key={t.id}
+                onClick={() => onSwitch(t.id)}
+                className={`flex-1 min-w-fit px-3 py-2 rounded-2xl text-sm font-medium transition-all whitespace-nowrap ${
+                  active ? 'bg-rose-500 text-white shadow-sm' : 'text-stone-600 hover:bg-stone-100'
+                }`}
+              >
+                {t.name}
+              </button>
+            );
+          })}
+        </div>
+        <button
+          onClick={onManage}
+          className="flex-shrink-0 p-2 rounded-full hover:bg-stone-100 text-stone-500"
+          aria-label="ניהול Trips"
+          title="ניהול Trips"
+        >
+          <Icon name="more" className="w-5 h-5" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ============== TRIP BANNER (date-based reminder) ==============
+function TripBanner({ activeTrip, scheduledTrip, currentTripId, onSwitch, onDismiss }) {
+  // Two scenarios:
+  // 1. scheduledTrip = a trip whose startDate is today AND it's not currently active → suggest switching IN
+  // 2. activeTrip = a trip whose endDate is today AND it IS the current trip → suggest switching OUT (back to default)
+  if (scheduledTrip && scheduledTrip.id !== currentTripId) {
+    return (
+      <div className="bg-rose-50 border border-rose-200 rounded-3xl p-4 mb-3 anim-fade-in">
+        <div className="flex items-start gap-3">
+          <div className="flex-1 min-w-0">
+            <div className="text-sm text-stone-700 leading-relaxed">
+              🎒 היום מתחיל ה-Trip <strong>"{scheduledTrip.name}"</strong>. להחליף את השגרה?
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-2 mt-3">
+          <button
+            onClick={() => onSwitch(scheduledTrip.id)}
+            className="flex-1 py-2 rounded-2xl bg-rose-500 text-white text-sm font-medium hover:bg-rose-600 transition-colors"
+          >
+            כן, החליפי
+          </button>
+          <button
+            onClick={() => onDismiss(`${scheduledTrip.id}-start`)}
+            className="px-4 py-2 rounded-2xl bg-stone-100 text-stone-600 text-sm hover:bg-stone-200"
+          >
+            לא עכשיו
+          </button>
+        </div>
+      </div>
+    );
+  }
+  if (activeTrip) {
+    return (
+      <div className="bg-amber-50 border border-amber-200 rounded-3xl p-4 mb-3 anim-fade-in">
+        <div className="text-sm text-stone-700 leading-relaxed">
+          🏠 היום מסתיים ה-Trip <strong>"{activeTrip.name}"</strong>. לחזור לשגרה הרגילה?
+        </div>
+        <div className="flex gap-2 mt-3">
+          <button
+            onClick={() => onSwitch(activeTrip.defaultId)}
+            className="flex-1 py-2 rounded-2xl bg-amber-500 text-white text-sm font-medium hover:bg-amber-600 transition-colors"
+          >
+            כן, חזרי
+          </button>
+          <button
+            onClick={() => onDismiss(`${activeTrip.id}-end`)}
+            className="px-4 py-2 rounded-2xl bg-stone-100 text-stone-600 text-sm hover:bg-stone-200"
+          >
+            לא עכשיו
+          </button>
+        </div>
+      </div>
+    );
+  }
+  return null;
+}
+
+// ============== TRIP MANAGER DIALOG ==============
+function TripManagerDialog({ data, onClose, onCreate, onUpdate, onDelete, onSwitch }) {
+  const [view, setView] = useState('list'); // 'list' | 'create' | 'edit'
+  const [editingTripId, setEditingTripId] = useState(null);
+
+  // Create / edit form state
+  const editingTrip = editingTripId ? data.trips[editingTripId] : null;
+  const [name, setName] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [copyFromTripId, setCopyFromTripId] = useState('');
+
+  useEffect(() => {
+    if (view === 'edit' && editingTrip) {
+      setName(editingTrip.name || '');
+      setStartDate(editingTrip.startDate || '');
+      setEndDate(editingTrip.endDate || '');
+    } else if (view === 'create') {
+      setName('');
+      setStartDate('');
+      setEndDate('');
+      // Default to copy from default trip
+      const defaultTrip = Object.values(data.trips).find(t => t.isDefault);
+      setCopyFromTripId(defaultTrip?.id || '');
+    }
+  }, [view, editingTripId]);
+
+  const list = (data.tripOrder || []).map(id => data.trips[id]).filter(Boolean);
+
+  if (view === 'list') {
+    return (
+      <Modal title="ניהול Trips" onClose={onClose}>
+        <div className="space-y-2">
+          {list.map(t => (
+            <div key={t.id} className="bg-white rounded-2xl p-3 border border-stone-200/60">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex-1 min-w-0">
+                  <div className="font-semibold text-stone-800 flex items-center gap-2">
+                    {t.name}
+                    {t.isDefault && (
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200">ברירת מחדל</span>
+                    )}
+                    {t.id === data.currentTripId && (
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 border border-rose-200">פעיל</span>
+                    )}
+                  </div>
+                  {(t.startDate || t.endDate) && (
+                    <div className="text-xs text-stone-500 mt-1">
+                      {t.startDate && formatDate(t.startDate)}
+                      {t.startDate && t.endDate && ' – '}
+                      {t.endDate && formatDate(t.endDate)}
+                    </div>
+                  )}
+                  <div className="text-[11px] text-stone-500 mt-1">
+                    {(t.morningSteps || []).length} בוקר · {(t.eveningSteps || []).length} ערב
+                  </div>
+                </div>
+                <div className="flex gap-1 flex-shrink-0">
+                  {t.id !== data.currentTripId && (
+                    <button
+                      onClick={() => { onSwitch(t.id); onClose(); }}
+                      className="px-3 py-1.5 text-xs rounded-xl bg-rose-50 text-rose-700 hover:bg-rose-100"
+                    >
+                      החליפי
+                    </button>
+                  )}
+                  <button
+                    onClick={() => { setEditingTripId(t.id); setView('edit'); }}
+                    className="p-1.5 rounded-xl text-stone-500 hover:bg-stone-100"
+                    aria-label="ערכי"
+                  >
+                    <Icon name="edit" className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+          <button
+            onClick={() => setView('create')}
+            className="w-full mt-2 py-3 rounded-2xl border-2 border-dashed border-stone-300 text-stone-500 hover:bg-stone-50 hover:text-rose-600 hover:border-rose-300 transition-all flex items-center justify-center gap-2 text-sm"
+          >
+            <Icon name="plus" className="w-4 h-4" />
+            צרי Trip חדש
+          </button>
+        </div>
+      </Modal>
+    );
+  }
+
+  // Form (create / edit)
+  const canSubmit = name.trim();
+  return (
+    <Modal title={view === 'create' ? 'Trip חדש' : 'עריכת Trip'} onClose={() => setView('list')}>
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-stone-700 mb-2">שם ה-Trip</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="למשל: אנגליה, חופשה, חורף"
+            className="w-full p-3 border border-stone-200 rounded-2xl text-sm bg-stone-50/50 focus:outline-none focus:border-rose-300"
+            style={{ fontFamily: "'Heebo', sans-serif" }}
+            autoFocus
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            <label className="block text-sm font-medium text-stone-700 mb-2">מתאריך</label>
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="w-full p-3 border border-stone-200 rounded-2xl text-sm bg-stone-50/50 focus:outline-none focus:border-rose-300"
+              style={{ fontFamily: "'Heebo', sans-serif" }}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-stone-700 mb-2">עד תאריך</label>
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="w-full p-3 border border-stone-200 rounded-2xl text-sm bg-stone-50/50 focus:outline-none focus:border-rose-300"
+              style={{ fontFamily: "'Heebo', sans-serif" }}
+            />
+          </div>
+        </div>
+        <p className="text-xs text-stone-500 leading-relaxed">
+          התאריכים אופציונליים. אם תזיני אותם, האפליקציה תזכיר לך להחליף שגרה ביום ההתחלה והסיום.
+        </p>
+
+        {view === 'create' && (
+          <div>
+            <label className="block text-sm font-medium text-stone-700 mb-2">העתיקי שלבים מ-Trip קיים? (אופציונלי)</label>
+            <select
+              value={copyFromTripId}
+              onChange={(e) => setCopyFromTripId(e.target.value)}
+              className="w-full p-3 border border-stone-200 rounded-2xl text-sm bg-stone-50/50 focus:outline-none focus:border-rose-300"
+              style={{ fontFamily: "'Heebo', sans-serif" }}
+            >
+              <option value="">— התחלה מאפס —</option>
+              {list.map(t => (
+                <option key={t.id} value={t.id}>{t.name}</option>
+              ))}
+            </select>
+            <p className="text-xs text-stone-500 mt-1.5">חוסך זמן - אז תערכי רק את ההבדלים</p>
+          </div>
+        )}
+
+        <div className="flex gap-2 pt-2">
+          <button onClick={() => setView('list')} className="flex-1 py-3 rounded-2xl bg-stone-100 text-stone-700 font-medium hover:bg-stone-200 transition-colors">
+            ביטול
+          </button>
+          <button
+            onClick={() => {
+              if (!canSubmit) return;
+              if (view === 'create') {
+                onCreate({ name: name.trim(), startDate: startDate || null, endDate: endDate || null, copyFromTripId: copyFromTripId || null });
+                onClose();
+              } else {
+                onUpdate(editingTripId, { name: name.trim(), startDate: startDate || null, endDate: endDate || null });
+                setView('list');
+              }
+            }}
+            disabled={!canSubmit}
+            className={`flex-1 py-3 rounded-2xl font-medium transition-all ${
+              canSubmit ? 'bg-rose-500 text-white hover:bg-rose-600 shadow-sm' : 'bg-stone-200 text-stone-400 cursor-not-allowed'
+            }`}
+          >
+            {view === 'create' ? 'צרי' : 'שמרי'}
+          </button>
+        </div>
+
+        {view === 'edit' && editingTrip && !editingTrip.isDefault && (
+          <div className="border-t border-stone-200 pt-3 mt-3">
+            <button
+              onClick={() => {
+                if (confirm(`למחוק את ה-Trip "${editingTrip.name}"? פעולה זו לא הפיכה.`)) {
+                  onDelete(editingTripId);
+                  setView('list');
+                }
+              }}
+              className="w-full py-2.5 rounded-2xl bg-rose-50 text-rose-700 text-sm font-medium hover:bg-rose-100 transition-colors flex items-center justify-center gap-2"
+            >
+              <Icon name="trash" className="w-4 h-4" />
+              מחקי Trip זה
+            </button>
+          </div>
+        )}
+      </div>
+    </Modal>
+  );
+}
+
 // ============== WEEK STRIP ==============
 function WeekStrip({ dateKey, onChangeDate, completions, morningSteps, eveningSteps }) {
   // Find the start of week (Sunday)
@@ -1429,32 +1896,74 @@ function App() {
   // Dialog state
   const [addStepKind, setAddStepKind] = useState(null); // 'morning' | 'evening' | null
   const [editStep, setEditStep] = useState(null);       // { kind, step }
-  const [editProduct, setEditProduct] = useState(null); // { product }
+  const [editProduct, setEditProduct] = useState(null); // { product } (legacy - not used in new UI but kept to not break refs)
   const [replaceProduct, setReplaceProduct] = useState(null); // { product }
   const [showArchive, setShowArchive] = useState(false);
+  const [showTripManager, setShowTripManager] = useState(false);
 
   const [morningCollapsed, setMorningCollapsed] = useState(false);
-  const [autoCollapsedKey, setAutoCollapsedKey] = useState(null); // remember which date we auto-collapsed for
+  const [autoCollapsedKey, setAutoCollapsedKey] = useState(null);
 
   const currentDay = useMemo(() => weekdayOf(dateKey), [dateKey]);
 
-  // Auto-collapse morning when all required morning steps are done — only once per day visit
+  // Current trip
+  const currentTrip = data.trips?.[data.currentTripId] || data.trips?.[data.tripOrder?.[0]];
+  const morningSteps = currentTrip?.morningSteps || [];
+  const eveningSteps = currentTrip?.eveningSteps || [];
+
+  // Build product suggestions from current products + history entries (for autocomplete)
+  const productSuggestions = useMemo(() => {
+    const list = [];
+    const seenNames = new Set(); // to avoid showing duplicates with the same display name
+    // Active products first
+    Object.values(data.products || {}).forEach(p => {
+      const key = `live-${p.id}`;
+      list.push({
+        key,
+        name: p.name,
+        goal: p.goal,
+        goalDays: p.goalDays,
+        price: p.price,
+        notes: p.notes || '',
+        productId: p.id,
+        archived: false,
+      });
+      seenNames.add(p.name.trim().toLowerCase() + '|' + (p.goal || ''));
+    });
+    // Archived (history) entries
+    Object.values(data.products || {}).forEach(p => {
+      (p.history || []).forEach((h, idx) => {
+        const sig = (h.name || '').trim().toLowerCase() + '|' + (h.goal || '');
+        if (seenNames.has(sig)) return;
+        seenNames.add(sig);
+        list.push({
+          key: `hist-${p.id}-${idx}`,
+          name: h.name,
+          goal: h.goal,
+          goalDays: h.goalDays,
+          price: h.price,
+          notes: '', // history doesn't carry notes
+          productId: null, // no link - creates new product if picked
+          archived: true,
+        });
+      });
+    });
+    return list;
+  }, [data.products]);
+
+  // Auto-collapse morning when all required morning steps are done
   useEffect(() => {
     const c = data.completions[dateKey] || {};
     const morningChecked = new Set(c.morning || []);
-    const requiredMorning = data.morningSteps.filter(s => !s.optional && s.days.includes(currentDay));
+    const requiredMorning = morningSteps.filter(s => !s.optional && s.days.includes(currentDay));
     const allDone = requiredMorning.length > 0 && requiredMorning.every(s => morningChecked.has(s.id));
     if (allDone && autoCollapsedKey !== dateKey) {
       setMorningCollapsed(true);
       setAutoCollapsedKey(dateKey);
     }
-    if (!allDone && autoCollapsedKey === dateKey) {
-      // user may have unchecked - reset auto-collapse memory so future re-completion can re-trigger
-      // but don't force-open. let the user choose.
-    }
-  }, [data.completions, dateKey, currentDay, data.morningSteps]);
+  }, [data.completions, dateKey, currentDay, morningSteps]);
 
-  // When date changes, reset collapse to open (so the new day starts open)
+  // When date changes, reset collapse to open
   useEffect(() => {
     setMorningCollapsed(false);
     setAutoCollapsedKey(null);
@@ -1477,12 +1986,28 @@ function App() {
     setData(prev => {
       const next = { ...prev };
       const today = todayKey();
+      const tripId = next.currentTripId;
+      if (!tripId || !next.trips[tripId]) return prev;
 
-      // Create or reuse product
+      // Decide product handling
       let productId = null;
-      if (payload.productName) {
+      if (payload.linkedProductId && next.products[payload.linkedProductId]) {
+        // Link to existing product
+        productId = payload.linkedProductId;
+        // Optionally update price/notes if the user changed them in the dialog
+        const existing = next.products[productId];
+        next.products = {
+          ...next.products,
+          [productId]: {
+            ...existing,
+            // We don't overwrite name/goal/goalDays from autocomplete pick; only update price/notes if user changed
+            price: payload.price ?? existing.price,
+            notes: payload.notes || existing.notes || '',
+          }
+        };
+      } else if (payload.productName) {
+        // Create new product
         productId = uid();
-        // If goal exists in any current product, find goalStartDate continuation
         const existingWithGoal = payload.goal
           ? Object.values(next.products).find(p => p.goal === payload.goal)
           : null;
@@ -1494,6 +2019,7 @@ function App() {
             goal: payload.goal || null,
             goalDays: payload.goalDays ?? null,
             price: payload.price ?? null,
+            notes: payload.notes || '',
             slotStartDate: today,
             goalStartDate: existingWithGoal ? existingWithGoal.goalStartDate : today,
             history: [],
@@ -1511,7 +2037,8 @@ function App() {
       };
 
       const stepsKey = kind === 'morning' ? 'morningSteps' : 'eveningSteps';
-      const list = [...next[stepsKey]];
+      const trip = next.trips[tripId];
+      const list = [...(trip[stepsKey] || [])];
       let insertAt = list.length;
       if (payload.position?.kind === 'start') insertAt = 0;
       else if (payload.position?.kind === 'after' && payload.position.refStepId) {
@@ -1522,7 +2049,10 @@ function App() {
         if (i >= 0) insertAt = i;
       }
       list.splice(insertAt, 0, newStep);
-      next[stepsKey] = list;
+      next.trips = {
+        ...next.trips,
+        [tripId]: { ...trip, [stepsKey]: list }
+      };
 
       return next;
     });
@@ -1533,9 +2063,10 @@ function App() {
     setData(prev => {
       const next = { ...prev };
       const today = todayKey();
+      const tripId = next.currentTripId;
+      if (!tripId || !next.trips[tripId]) return prev;
       const stepsKey = kind === 'morning' ? 'morningSteps' : 'eveningSteps';
 
-      // Determine product handling
       const oldProductId = originalStep.productId;
       const oldProduct = oldProductId ? next.products[oldProductId] : null;
       const newProductName = payload.productName;
@@ -1544,7 +2075,21 @@ function App() {
 
       let updatedProductId = oldProductId;
 
-      if (!hadProduct && wantsProduct) {
+      // If user picked autocomplete suggestion linking to a different existing product
+      if (payload.linkedProductId && next.products[payload.linkedProductId] && payload.linkedProductId !== oldProductId) {
+        // Switch to linked product
+        updatedProductId = payload.linkedProductId;
+        // Update its price/notes if user edited them
+        const linked = next.products[payload.linkedProductId];
+        next.products = {
+          ...next.products,
+          [payload.linkedProductId]: {
+            ...linked,
+            price: payload.price ?? linked.price,
+            notes: payload.notes || linked.notes || '',
+          }
+        };
+      } else if (!hadProduct && wantsProduct) {
         // Create new product
         const newId = uid();
         const existingWithGoal = payload.goal
@@ -1558,6 +2103,7 @@ function App() {
             goal: payload.goal || null,
             goalDays: payload.goalDays ?? null,
             price: payload.price ?? null,
+            notes: payload.notes || '',
             slotStartDate: today,
             goalStartDate: existingWithGoal ? existingWithGoal.goalStartDate : (payload.goal ? today : null),
             history: [],
@@ -1565,10 +2111,10 @@ function App() {
         };
         updatedProductId = newId;
       } else if (hadProduct && !wantsProduct) {
-        // Unlink product (don't delete - keep for archive)
+        // Unlink product
         updatedProductId = null;
       } else if (hadProduct && wantsProduct) {
-        // Update existing product (rename / change goal / change price)
+        // Update existing product
         const goalChanged = oldProduct.goal !== payload.goal;
         let newGoalStartDate = oldProduct.goalStartDate;
         if (goalChanged) {
@@ -1585,20 +2131,28 @@ function App() {
             goal: payload.goal || null,
             goalDays: payload.goalDays ?? null,
             price: payload.price ?? null,
+            notes: payload.notes || '',
             goalStartDate: newGoalStartDate,
           }
         };
       }
 
-      // Update the step
-      next[stepsKey] = next[stepsKey].map(s => s.id === originalStep.id ? {
-        ...s,
-        name: payload.name,
-        instructions: payload.instructions,
-        optional: payload.optional,
-        days: payload.days,
-        productId: updatedProductId,
-      } : s);
+      // Update the step inside the current trip
+      const trip = next.trips[tripId];
+      next.trips = {
+        ...next.trips,
+        [tripId]: {
+          ...trip,
+          [stepsKey]: (trip[stepsKey] || []).map(s => s.id === originalStep.id ? {
+            ...s,
+            name: payload.name,
+            instructions: payload.instructions,
+            optional: payload.optional,
+            days: payload.days,
+            productId: updatedProductId,
+          } : s)
+        }
+      };
 
       return next;
     });
@@ -1643,7 +2197,6 @@ function App() {
       const existing = next.products[product.id];
       const daysUsed = countProductDays(next, product.id, existing.slotStartDate);
 
-      // Push old product to history
       const historyEntry = {
         name: existing.name,
         rating: payload.rating,
@@ -1656,21 +2209,15 @@ function App() {
         daysUsed,
       };
 
-      // Determine new goalStartDate
       const sameGoal = existing.goal && existing.goal === payload.newGoal;
       const otherWithGoal = payload.newGoal
         ? Object.values(next.products).find(p => p.id !== product.id && p.goal === payload.newGoal)
         : null;
       let newGoalStartDate;
-      if (sameGoal) {
-        newGoalStartDate = existing.goalStartDate; // continue
-      } else if (otherWithGoal) {
-        newGoalStartDate = otherWithGoal.goalStartDate;
-      } else if (payload.newGoal) {
-        newGoalStartDate = today;
-      } else {
-        newGoalStartDate = null;
-      }
+      if (sameGoal) newGoalStartDate = existing.goalStartDate;
+      else if (otherWithGoal) newGoalStartDate = otherWithGoal.goalStartDate;
+      else if (payload.newGoal) newGoalStartDate = today;
+      else newGoalStartDate = null;
 
       next.products = {
         ...next.products,
@@ -1680,6 +2227,7 @@ function App() {
           goal: payload.newGoal,
           goalDays: payload.newGoalDays,
           price: payload.newPrice ?? null,
+          notes: payload.newNotes || '',
           slotStartDate: today,
           goalStartDate: newGoalStartDate,
           history: [...(existing.history || []), historyEntry],
@@ -1693,14 +2241,17 @@ function App() {
   const handleMoveStep = (kind, stepId, delta) => {
     setData(prev => {
       const next = { ...prev };
+      const tripId = next.currentTripId;
+      if (!tripId || !next.trips[tripId]) return prev;
       const stepsKey = kind === 'morning' ? 'morningSteps' : 'eveningSteps';
-      const list = [...next[stepsKey]];
+      const trip = next.trips[tripId];
+      const list = [...(trip[stepsKey] || [])];
       const i = list.findIndex(s => s.id === stepId);
       if (i < 0) return prev;
       const j = i + delta;
       if (j < 0 || j >= list.length) return prev;
       [list[i], list[j]] = [list[j], list[i]];
-      next[stepsKey] = list;
+      next.trips = { ...next.trips, [tripId]: { ...trip, [stepsKey]: list } };
       return next;
     });
   };
@@ -1708,9 +2259,18 @@ function App() {
   const handleArchiveStep = (kind, step) => {
     setData(prev => {
       const next = { ...prev };
+      const tripId = next.currentTripId;
+      if (!tripId || !next.trips[tripId]) return prev;
       const stepsKey = kind === 'morning' ? 'morningSteps' : 'eveningSteps';
-      next[stepsKey] = next[stepsKey].filter(s => s.id !== step.id);
-      next.archivedSteps = [...next.archivedSteps, { ...step, type: kind, archivedAt: todayKey() }];
+      const trip = next.trips[tripId];
+      next.trips = {
+        ...next.trips,
+        [tripId]: {
+          ...trip,
+          [stepsKey]: (trip[stepsKey] || []).filter(s => s.id !== step.id),
+        }
+      };
+      next.archivedSteps = [...(next.archivedSteps || []), { ...step, type: kind, archivedAt: todayKey(), tripId }];
       return next;
     });
   };
@@ -1718,12 +2278,22 @@ function App() {
   const handleRestoreStep = (stepId) => {
     setData(prev => {
       const next = { ...prev };
-      const archived = next.archivedSteps.find(s => s.id === stepId);
+      const archived = (next.archivedSteps || []).find(s => s.id === stepId);
       if (!archived) return prev;
       next.archivedSteps = next.archivedSteps.filter(s => s.id !== stepId);
+      // Restore into the trip it came from, or current trip if that trip is gone
+      const targetTripId = (archived.tripId && next.trips[archived.tripId]) ? archived.tripId : next.currentTripId;
+      if (!targetTripId || !next.trips[targetTripId]) return prev;
       const stepsKey = archived.type === 'morning' ? 'morningSteps' : 'eveningSteps';
-      const { type, archivedAt, ...stepData } = archived;
-      next[stepsKey] = [...next[stepsKey], stepData];
+      const { type, archivedAt, tripId, ...stepData } = archived;
+      const trip = next.trips[targetTripId];
+      next.trips = {
+        ...next.trips,
+        [targetTripId]: {
+          ...trip,
+          [stepsKey]: [...(trip[stepsKey] || []), stepData],
+        }
+      };
       return next;
     });
   };
@@ -1731,12 +2301,14 @@ function App() {
   const handleDeletePermanent = (stepId) => {
     setData(prev => {
       const next = { ...prev };
-      const archived = next.archivedSteps.find(s => s.id === stepId);
+      const archived = (next.archivedSteps || []).find(s => s.id === stepId);
       next.archivedSteps = next.archivedSteps.filter(s => s.id !== stepId);
-      // Also remove the orphan product if no other step references it
+      // Also remove the orphan product if no other step references it (across all trips)
       if (archived?.productId) {
-        const refs = [...next.morningSteps, ...next.eveningSteps].some(s => s.productId === archived.productId);
-        if (!refs) {
+        const stillReferenced = Object.values(next.trips || {}).some(trip =>
+          [...(trip.morningSteps || []), ...(trip.eveningSteps || [])].some(s => s.productId === archived.productId)
+        );
+        if (!stillReferenced) {
           const { [archived.productId]: _, ...rest } = next.products;
           next.products = rest;
         }
@@ -1784,14 +2356,114 @@ function App() {
       alert('הקובץ לא תקין.');
       return;
     }
-    const ok = confirm('ייבוא יחליף את כל הנתונים הקיימים. להמשיך?');
+    const ok = confirm('שחזור יחליף את כל הנתונים הקיימים. להמשיך?');
     if (!ok) return;
     setData(migrate(parsed));
     setShowArchive(false);
   };
 
+  // Trip management
+  const handleSwitchTrip = (tripId) => {
+    if (!data.trips?.[tripId]) return;
+    setData(prev => ({ ...prev, currentTripId: tripId }));
+    // Reset morning collapse so the new trip's morning is open
+    setMorningCollapsed(false);
+    setAutoCollapsedKey(null);
+  };
+
+  const handleCreateTrip = ({ name, startDate, endDate, copyFromTripId }) => {
+    setData(prev => {
+      const next = { ...prev };
+      const newId = uid();
+      let morningSteps = [];
+      let eveningSteps = [];
+      if (copyFromTripId && next.trips[copyFromTripId]) {
+        // Deep copy steps with fresh IDs (so completions don't collide)
+        const source = next.trips[copyFromTripId];
+        morningSteps = (source.morningSteps || []).map(s => ({ ...s, id: uid() }));
+        eveningSteps = (source.eveningSteps || []).map(s => ({ ...s, id: uid() }));
+      }
+      next.trips = {
+        ...next.trips,
+        [newId]: {
+          id: newId,
+          name: name || 'Trip חדש',
+          isDefault: false,
+          startDate: startDate || null,
+          endDate: endDate || null,
+          morningSteps,
+          eveningSteps,
+        }
+      };
+      next.tripOrder = [...(next.tripOrder || []), newId];
+      next.currentTripId = newId;
+      return next;
+    });
+    setMorningCollapsed(false);
+    setAutoCollapsedKey(null);
+  };
+
+  const handleUpdateTrip = (tripId, updates) => {
+    setData(prev => {
+      const next = { ...prev };
+      if (!next.trips[tripId]) return prev;
+      next.trips = {
+        ...next.trips,
+        [tripId]: { ...next.trips[tripId], ...updates }
+      };
+      return next;
+    });
+  };
+
+  const handleDeleteTrip = (tripId) => {
+    setData(prev => {
+      const next = { ...prev };
+      if (!next.trips[tripId] || next.trips[tripId].isDefault) return prev;
+      // Find default trip to fall back to
+      const defaultTrip = Object.values(next.trips).find(t => t.isDefault) || Object.values(next.trips)[0];
+      // Remove the trip
+      const { [tripId]: _, ...remainingTrips } = next.trips;
+      next.trips = remainingTrips;
+      next.tripOrder = (next.tripOrder || []).filter(id => id !== tripId);
+      if (next.currentTripId === tripId) {
+        next.currentTripId = defaultTrip ? defaultTrip.id : (next.tripOrder[0] || null);
+      }
+      return next;
+    });
+  };
+
+  const handleDismissBanner = (key) => {
+    setData(prev => ({
+      ...prev,
+      dismissedTripBanners: { ...(prev.dismissedTripBanners || {}), [key]: true }
+    }));
+  };
+
   const skinEntry = data.skinJournal[dateKey] || { tags: [], note: '' };
   const isToday = dateKey === todayKey();
+  const today = todayKey();
+
+  // Compute trip banner state (only show when viewing today)
+  const tripBannerProps = useMemo(() => {
+    if (!isToday) return null;
+    const dismissed = data.dismissedTripBanners || {};
+    // Scenario 1: a non-active trip's startDate is today → suggest switching in
+    for (const t of Object.values(data.trips || {})) {
+      if (t.id === data.currentTripId) continue;
+      if (t.startDate === today && !dismissed[`${t.id}-start`]) {
+        return { scheduledTrip: t, activeTrip: null };
+      }
+    }
+    // Scenario 2: the active trip's endDate is today → suggest switching out
+    const active = data.trips?.[data.currentTripId];
+    if (active && active.endDate === today && !dismissed[`${active.id}-end`]) {
+      const defaultTrip = Object.values(data.trips).find(t => t.isDefault);
+      if (defaultTrip && defaultTrip.id !== active.id) {
+        return { scheduledTrip: null, activeTrip: { ...active, defaultId: defaultTrip.id } };
+      }
+    }
+    return null;
+  }, [data.trips, data.currentTripId, data.dismissedTripBanners, today, isToday]);
 
   return (
     <div className="min-h-screen pb-24" style={{ paddingTop: 'env(safe-area-inset-top, 0)' }}>
@@ -1816,18 +2488,36 @@ function App() {
           </button>
         </div>
 
+        {tripBannerProps && (
+          <TripBanner
+            scheduledTrip={tripBannerProps.scheduledTrip}
+            activeTrip={tripBannerProps.activeTrip}
+            currentTripId={data.currentTripId}
+            onSwitch={handleSwitchTrip}
+            onDismiss={handleDismissBanner}
+          />
+        )}
+
+        <TripSwitcher
+          trips={data.trips || {}}
+          tripOrder={data.tripOrder || []}
+          currentTripId={data.currentTripId}
+          onSwitch={handleSwitchTrip}
+          onManage={() => setShowTripManager(true)}
+        />
+
         <WeekStrip
           dateKey={dateKey}
           onChangeDate={setDateKey}
           completions={data.completions}
-          morningSteps={data.morningSteps}
-          eveningSteps={data.eveningSteps}
+          morningSteps={morningSteps}
+          eveningSteps={eveningSteps}
         />
 
         {/* Render order: when morning is collapsed, evening visually moves up naturally because it's after */}
         <RoutineSection
           kind="morning"
-          steps={data.morningSteps}
+          steps={morningSteps}
           products={data.products}
           completions={data.completions[dateKey] || {}}
           currentDay={currentDay}
@@ -1848,7 +2538,7 @@ function App() {
 
         <RoutineSection
           kind="evening"
-          steps={data.eveningSteps}
+          steps={eveningSteps}
           products={data.products}
           completions={data.completions[dateKey] || {}}
           currentDay={currentDay}
@@ -1886,8 +2576,9 @@ function App() {
           mode="add"
           kind={addStepKind}
           currentDay={currentDay}
-          existingSteps={addStepKind === 'morning' ? data.morningSteps : data.eveningSteps}
+          existingSteps={addStepKind === 'morning' ? morningSteps : eveningSteps}
           initial={null}
+          productSuggestions={productSuggestions}
           onClose={() => setAddStepKind(null)}
           onConfirm={(payload) => handleAddStep(addStepKind, payload)}
         />
@@ -1900,7 +2591,7 @@ function App() {
             mode="edit"
             kind={editStep.kind}
             currentDay={currentDay}
-            existingSteps={editStep.kind === 'morning' ? data.morningSteps : data.eveningSteps}
+            existingSteps={editStep.kind === 'morning' ? morningSteps : eveningSteps}
             initial={{
               name: editStep.step.name,
               productName: linkedProduct?.name || '',
@@ -1910,7 +2601,10 @@ function App() {
               goal: linkedProduct?.goal ?? null,
               goalDays: linkedProduct?.goalDays ?? null,
               price: linkedProduct?.price ?? null,
+              notes: linkedProduct?.notes ?? '',
+              linkedProductId: linkedProduct?.id ?? null,
             }}
+            productSuggestions={productSuggestions}
             onClose={() => setEditStep(null)}
             onConfirm={(payload) => handleEditStep(editStep.kind, editStep.step, payload)}
           />
@@ -1937,18 +2631,29 @@ function App() {
         />
       )}
 
+      {showTripManager && (
+        <TripManagerDialog
+          data={data}
+          onClose={() => setShowTripManager(false)}
+          onCreate={handleCreateTrip}
+          onUpdate={handleUpdateTrip}
+          onDelete={handleDeleteTrip}
+          onSwitch={handleSwitchTrip}
+        />
+      )}
+
       {openMenuId && (() => {
         // Find the step + which list it's in
-        let openStep = data.morningSteps.find(s => s.id === openMenuId);
+        let openStep = morningSteps.find(s => s.id === openMenuId);
         let kind = 'morning';
         if (!openStep) {
-          openStep = data.eveningSteps.find(s => s.id === openMenuId);
+          openStep = eveningSteps.find(s => s.id === openMenuId);
           kind = 'evening';
         }
         if (!openStep) return null;
 
         const product = openStep.productId ? data.products[openStep.productId] : null;
-        const list = kind === 'morning' ? data.morningSteps : data.eveningSteps;
+        const list = kind === 'morning' ? morningSteps : eveningSteps;
         const fullIdx = list.findIndex(s => s.id === openStep.id);
 
         return (
